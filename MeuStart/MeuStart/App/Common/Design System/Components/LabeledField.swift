@@ -32,3 +32,9 @@ struct LabeledField<Content: View>: View {
         .shadow(color: Color.black.opacity(0.05), radius: 1, y: 1)
     }
 }
+
+#Preview {
+    LabeledField(title: "Email") {
+        TextField("Digite seu email", text: .constant(""))
+    }
+}
