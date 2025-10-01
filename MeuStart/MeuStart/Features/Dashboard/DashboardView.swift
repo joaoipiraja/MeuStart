@@ -7,37 +7,6 @@
 
 import SwiftUI
 
-//struct DashboardView: View {
-//    var body: some View {
-//        VStack{
-//            Text("Início")
-//                .font(.system(size: 28, weight: .bold))
-//                .frame(maxWidth: .infinity, alignment: .topLeading)
-//                .padding(.top, 47)
-//                .padding(.leading, 16)
-//            Divider()
-//            
-//            Spacer()
-//            VStack{
-//                Text("Acompanhamento e Onboarding")
-//                VStack{
-//                    Text("Resumo")
-//
-//                }
-//            }.background(Color(UIColor.systemGroupedBackground))
-//
-//        }.navigationTitle("Perfil")
-//        
-//        
-//    }
-//}
-//
-//#Preview {
-//    DashboardView()
-//}
-
-import SwiftUI
-
 struct DashboardView: View {
     var body: some View {
         NavigationView {
