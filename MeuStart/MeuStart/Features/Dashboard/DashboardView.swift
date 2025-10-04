@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct DashboardView: View {
+    @State private var showSheet = false
     var body: some View {
         NavigationView {
             ScrollView {
@@ -16,12 +17,14 @@ struct DashboardView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .padding(.top, 16)
+                        .padding(.horizontal)
                     Divider()
-        
+                    
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Acompanhamento de Onboarding")
                             .font(.headline)
-                            
+                            .padding(.horizontal)
+                        
                         
                         VStack(alignment: .leading, spacing: 16) {
                             Text("RESUMO")
@@ -30,18 +33,22 @@ struct DashboardView: View {
                                 .padding(.top, 16)
                             
                             VStack {
-                                SummaryItem(title: "COLABORADORES ATIVOS", value: "05", color: .blue)
-                                SummaryItem(title: "CONCLUÍDOS (MÊS)", value: "04", color: .green)
-                                SummaryItem(title: "EM ATRASO", value: "01", color: .red)
+                                SummaryItemView(title: "COLABORADORES ATIVOS", value: "05", color: .blue)
+                                SummaryItemView(title: "CONCLUÍDOS (MÊS)", value: "04", color: .green)
+                                SummaryItemView(title: "EM ATRASO", value: "01", color: .red)
                             }
                         }
                         .padding()
                         .background(Color.white)
                         .cornerRadius(12)
                         .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
+                        .padding(.horizontal)
+                        .padding(.bottom, 32)
+                      
+                        
                     }
                     
-                    // MARK: - Lista de Colaboradores
+                    
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Lista de Colaboradores")
                             .font(.headline)
@@ -50,8 +57,8 @@ struct DashboardView: View {
                             Button(action: {}) {
                                 Text("Todos")
                                     .fontWeight(.semibold)
-                                    .padding(.vertical, 6)
-                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 16)
+                                    .padding(.horizontal, 20)
                                     .background(Color.green)
                                     .foregroundColor(.white)
                                     .cornerRadius(8)
@@ -62,126 +69,54 @@ struct DashboardView: View {
                                 Button("Status") {}
                             } label: {
                                 HStack {
-                                    Text("Ordenar por")
-                                    Image(systemName: "chevron.down")
+                                    Text("Ordenar por").foregroundColor(.black)
+                                    Image(systemName: "chevron.down").foregroundColor(.black)
                                 }
-                                .padding(.vertical, 6)
-                                .padding(.horizontal, 16)
+                                .padding(.vertical, 16)
+                                .padding(.horizontal, 20)
                                 .background(Color.white)
                                 .cornerRadius(8)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.gray.opacity(0.3))
+                                        .stroke(Color.gray.opacity(0.9))
                                 )
                             }
                         }
                         
                         VStack(spacing: 12) {
-                            EmployeeCard(name: "André de Lima Freitas", role: "Product Designer", status: .concluido)
-                            EmployeeCard(name: "Manoel Gomes Ferreira", role: "Auxiliar Administrativo", status: .atraso)
-                            EmployeeCard(name: "Beatriz Maria Andrade", role: "Analista Financeiro", status: .atencao)
-                            EmployeeCard(name: "Clarice de Sousa Dourado", role: "Diretora de Marketing", status: .atencao)
+                            EmployeeCardView(name: "André de Lima Freitas", role: "Product Designer", status: .concluido).onTapGesture {
+                                showSheet = true
+                            }
+                            EmployeeCardView(name: "Manoel Gomes Ferreira", role: "Auxiliar Administrativo", status: .atraso).onTapGesture {
+                                showSheet = true
+                            }
+                            EmployeeCardView(name: "Beatriz Maria Andrade", role: "Analista Financeiro", status: .atencao).onTapGesture {
+                                showSheet = true
+                            }
+                            EmployeeCardView(name: "Clarice de Sousa Dourado", role: "Diretora de Marketing", status: .atencao).onTapGesture {
+                                showSheet = true
+                            }
+                        }.sheet(isPresented: $showSheet) {
+                            BottomSheetColaboratorView(showSheet: $showSheet)
                         }
                     }
+                    .padding(.horizontal)
+                    .padding(.bottom, 32)
+                   
                 }
-                .padding(.horizontal)
-                .padding(.bottom, 32)
+            }.background(Color(UIColor.systemGray6))
+                .navigationBarHidden(true)
             }
-            .background(Color(UIColor.systemGray6))
-            .navigationBarHidden(true)
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .tabItem {
-            Label("Início", systemImage: "house.fill")
+            .navigationViewStyle(StackNavigationViewStyle())
+            .tabItem {
+                Label("Início", systemImage: "house.fill")
+            }
+            .navigationTitle("Inicio")
+            //.padding(.horizontal)
         }
     }
-}
 
-struct SummaryItem: View {
-    let title: String
-    let value: String
-    let color: Color
-    
-    var body: some View {
-        HStack {
-            Text(title)
-                .font(.caption)
-                .foregroundColor(color)
-                .multilineTextAlignment(.center)
-            Spacer()
-            Text(value)
-                .font(.headline)
-                .padding(.top, 4)
-                .frame(width: 40, height: 28)
-                .background(color.opacity(0.15))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(color.opacity(0.6), lineWidth: 1)
-                )
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
 
-struct EmployeeCard: View {
-    enum Status {
-        case concluido, atraso, atencao
-        
-        var color: Color {
-            switch self {
-            case .concluido: return .green
-            case .atraso: return .red
-            case .atencao: return .yellow
-            }
-        }
-        
-        var text: String {
-            switch self {
-            case .concluido: return "CONCLUÍDO"
-            case .atraso: return "COM ATRASO"
-            case .atencao: return "ATENÇÃO"
-            }
-        }
-    }
-    
-    let name: String
-    let role: String
-    let status: Status
-    
-    var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Circle()
-                .fill(status.color)
-                .frame(width: 10, height: 10)
-                .padding(.top, 8)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(name)
-                    .fontWeight(.semibold)
-                Text("CARGO: \(role.uppercased())")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                
-                Text(status.text)
-                    .font(.caption2)
-                    .fontWeight(.bold)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 8)
-                    .background(status.color.opacity(0.1))
-                    .foregroundColor(status.color)
-                    .cornerRadius(6)
-            }
-            
-            Spacer()
-            Image(systemName: "chevron.right")
-                .foregroundColor(.gray)
-                .padding(.top, 8)
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(12)
-    }
-}
 
 #Preview {
     DashboardView()
