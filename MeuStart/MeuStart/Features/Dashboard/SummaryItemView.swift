@@ -21,6 +21,7 @@ struct SummaryItemView: View {
             Spacer()
             Text(value)
                 .font(.headline)
+                .foregroundColor(color)
                 .frame(width: 40, height: 29)
                 .background(color.opacity(0.15))
                 .overlay(

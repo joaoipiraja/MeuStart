@@ -18,13 +18,13 @@ struct BottomSheetColaboratorView: View {
                     .fontWeight(.semibold)
                     .padding(.top, 20)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text("Atenção")
+                Text("CONCLUÍDO")
                     .font(.caption2)
-                    .fontWeight(.bold)
+                    .fontWeight(.medium)
                     .padding(.vertical, 4)
                     .padding(.horizontal, 8)
-                    .background(.blue.opacity(0.1))
-                    .foregroundColor(.blue)
+                    .background(.green.opacity(0.3))
+                    .foregroundColor(.black)
                     .cornerRadius(10)
                     
                 VStack(alignment: .leading, spacing: 4) {
@@ -49,15 +49,22 @@ struct BottomSheetColaboratorView: View {
                         Text("22/09/2025")
                             .font(.caption)
                     }
-                }.padding(.bottom, 16)
+                }//.padding(.bottom, 16)
                 
                 VStack{
                     Text("Checklist de Onboarding")
                         .font(.title3)
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical, 12)
+                    CheckboxListView()
+                    Text("Checklist de Integração")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical, 12)
                     
-                    
+                    CheckboxListView()
                 }
                     
 

@@ -22,9 +22,9 @@ struct DashboardView: View {
                     
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Acompanhamento de Onboarding")
-                            .font(.headline)
+                            .font(.title2)
+                            .fontWeight(.semibold)
                             .padding(.horizontal)
-                        
                         
                         VStack(alignment: .leading, spacing: 16) {
                             Text("RESUMO")
@@ -43,7 +43,7 @@ struct DashboardView: View {
                         .cornerRadius(12)
                         .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
                         .padding(.horizontal)
-                        .padding(.bottom, 32)
+                        .padding(.bottom, 15)
                       
                         
                     }
@@ -51,7 +51,8 @@ struct DashboardView: View {
                     
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Lista de Colaboradores")
-                            .font(.headline)
+                            .font(.title2)
+                            .fontWeight(.semibold)
                         
                         HStack {
                             Button(action: {}) {
@@ -59,7 +60,7 @@ struct DashboardView: View {
                                     .fontWeight(.semibold)
                                     .padding(.vertical, 16)
                                     .padding(.horizontal, 20)
-                                    .background(Color.green)
+                                    .background(Color(red: 48/255, green: 125/255, blue: 20/255))
                                     .foregroundColor(.white)
                                     .cornerRadius(8)
                             }
@@ -84,16 +85,7 @@ struct DashboardView: View {
                         }
                         
                         VStack(spacing: 12) {
-                            EmployeeCardView(name: "André de Lima Freitas", role: "Product Designer", status: .concluido).onTapGesture {
-                                showSheet = true
-                            }
-                            EmployeeCardView(name: "Manoel Gomes Ferreira", role: "Auxiliar Administrativo", status: .atraso).onTapGesture {
-                                showSheet = true
-                            }
-                            EmployeeCardView(name: "Beatriz Maria Andrade", role: "Analista Financeiro", status: .atencao).onTapGesture {
-                                showSheet = true
-                            }
-                            EmployeeCardView(name: "Clarice de Sousa Dourado", role: "Diretora de Marketing", status: .atencao).onTapGesture {
+                            EmployeeCardListView().onTapGesture {
                                 showSheet = true
                             }
                         }.sheet(isPresented: $showSheet) {
