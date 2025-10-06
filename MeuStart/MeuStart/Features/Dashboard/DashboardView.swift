@@ -50,10 +50,11 @@ struct DashboardView: View {
                         .padding(.horizontal)
                         .padding(.bottom, 15)
                     }
-                    VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 11) {
                         Text("Lista de Colaboradores")
                             .font(.title2)
                             .fontWeight(.semibold)
+                            .padding(.vertical, 10)
                         
                         HStack {
                             Button(action: {}) {
