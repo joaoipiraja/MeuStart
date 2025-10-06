@@ -12,19 +12,24 @@ struct DashboardView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    Text("Início")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .padding(.top, 16)
-                        .padding(.horizontal)
-                    Divider()
+                VStack(spacing: 0) {
                     
-                    VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Início")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .padding(.top, 56)
+                            .padding(.horizontal)
+                        Divider()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .background(Color(red: 252/255, green: 252/255, blue: 253/255))
+                    VStack(alignment: .leading, spacing: 1) {
                         Text("Acompanhamento de Onboarding")
                             .font(.title2)
                             .fontWeight(.semibold)
                             .padding(.horizontal)
+                            .padding(.vertical, 20)
                         
                         VStack(alignment: .leading, spacing: 16) {
                             Text("RESUMO")
@@ -44,11 +49,7 @@ struct DashboardView: View {
                         .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
                         .padding(.horizontal)
                         .padding(.bottom, 15)
-                      
-                        
                     }
-                    
-                    
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Lista de Colaboradores")
                             .font(.title2)
@@ -88,7 +89,8 @@ struct DashboardView: View {
                             EmployeeCardListView().onTapGesture {
                                 showSheet = true
                             }
-                        }.sheet(isPresented: $showSheet) {
+                        }
+                        .sheet(isPresented: $showSheet) {
                             BottomSheetColaboratorView(showSheet: $showSheet)
                         }
                     }
@@ -96,8 +98,10 @@ struct DashboardView: View {
                     .padding(.bottom, 32)
                    
                 }
-            }.background(Color(UIColor.systemGray6))
-                .navigationBarHidden(true)
+                .background(Color(UIColor.systemGray6))
+            }
+            .background(Color.white)
+            .navigationBarHidden(true)
             }
             .navigationViewStyle(StackNavigationViewStyle())
             .tabItem {
