@@ -71,7 +71,6 @@ struct EmployeeCardView: View {
         .padding(.bottom, 2)
         .background(Color.white)
         .cornerRadius(12)
-        //.border(.black)
     }
 }
 
