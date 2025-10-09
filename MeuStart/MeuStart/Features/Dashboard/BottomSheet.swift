@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BottomSheetColaboratorView: View {
+struct BottomSheet: View {
     @Binding var showSheet: Bool
     @State private var itemsOnboard: [ChecklistItem] = [
         .init(
@@ -185,5 +185,5 @@ struct BottomSheetColaboratorView: View {
 
 #Preview {
     @Previewable @State var showSheet2 = true
-    BottomSheetColaboratorView(showSheet: $showSheet2)
+    BottomSheet(showSheet: $showSheet2)
 }
