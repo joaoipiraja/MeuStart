@@ -10,17 +10,17 @@ import SwiftUI
 @MainActor
 final class DashboardViewModel: ObservableObject {
     @Published var showSheet: Bool = false
-    
+    @Published var selectedEmployee: Employee? = nil
     // Exemplo de filtro e ordenação
     @Published var selectedFilter: FilterOption = .all
     @Published var selectedSort: SortOption = .name
     
     // Lista de colaboradores (mock)
     @Published var employees: [Employee] = [
-        .init(name: "André de Lima Freitas",role: "Product Designer", status: .completed),
-        .init(name: "Manoel Gomes Ferreira", role: "Auxiliar Administrativo", status: .delayed),
-        .init(name: "Beatriz Maria Andrade", role: "Analista Financeiro",status: .atention),
-        .init(name: "Clarisse Souza Dourado",role: "Diretora de Marketing", status: .atention)
+        .init(name: "André de Lima Freitas",role: "Product Designer", manager: "Marcelo Farias", status: .completed, startDate: "12/08/2019"),
+        .init(name: "Manoel Gomes Ferreira", role: "Auxiliar Administrativo", manager: "Carlos Souza", status: .delayed, startDate: "05/09/2023"),
+        .init(name: "Beatriz Maria Andrade", role: "Analista Financeiro", manager: "Juliana Silveira",status: .atention, startDate: "20/20/2020"),
+        .init(name: "Clarisse Souza Dourado",role: "Diretora de Marketing", manager: "Marcos Pasquim", status: .atention, startDate: "12/02/2012")
     ]
     
     // MARK: - Opções de filtro e ordenação

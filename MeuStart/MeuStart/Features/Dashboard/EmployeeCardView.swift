@@ -49,6 +49,7 @@ struct EmployeeCardView: View {
                 
                 Text(labelText)
                     .font(.caption2)
+                    .textCase(.uppercase)
                     .fontWeight(.bold)
                     .padding(.vertical, 4)
                     .padding(.horizontal, 8)
@@ -72,6 +73,6 @@ struct EmployeeCardView: View {
 
 
 #Preview {
-    EmployeeCardView(employee: Employee(name: "João Vitor", role: "Product Designer", status: .atention))
+    EmployeeCardView(employee: Employee(name: "João Vitor", role: "Product Designer", manager:"", status: .atention, startDate: ""))
 }
 

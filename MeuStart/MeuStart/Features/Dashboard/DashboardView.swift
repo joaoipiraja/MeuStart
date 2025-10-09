@@ -11,12 +11,10 @@ import SwiftUI
 
 struct DashboardView: View {
     @StateObject private var viewModel = DashboardViewModel()
-    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
-                    // Cabeçalho
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Início")
                             .font(.largeTitle)
@@ -27,8 +25,6 @@ struct DashboardView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .background(Color(red: 252/255, green: 252/255, blue: 253/255))
-                    
-                    // Acompanhamento
                     VStack(alignment: .leading, spacing: 1) {
                         Text("Acompanhamento de Onboarding")
                             .font(.title2)
@@ -43,9 +39,10 @@ struct DashboardView: View {
                                 .padding(.top, 16)
                             
                             VStack {
-                                SummaryItemView(title: "COLABORADORES ATIVOS", value: "05", color: .blue)
-                                SummaryItemView(title: "CONCLUÍDOS (MÊS)", value: "04", color: .green)
-                                SummaryItemView(title: "EM ATRASO", value: "01", color: .red)
+                                SummaryItemView(title: "COLABORADORES ATIVOS", value: viewModel.employees.count, color: .blue)
+                                SummaryItemView(title: "CONCLUÍDOS (MÊS)", value: viewModel.employees.filter { $0.status == .completed }.count, color: .green)
+                                SummaryItemView(title: "EM ATRASO", value: viewModel.employees.filter { $0.status == .delayed }.count, color: .red)
+
                             }
                         }
                         .padding()
@@ -55,8 +52,6 @@ struct DashboardView: View {
                         .padding(.horizontal)
                         .padding(.bottom, 15)
                     }
-                    
-                    // Lista
                     VStack(alignment: .leading, spacing: 11) {
                         Text("Lista de Colaboradores")
                             .font(.title2)
@@ -104,17 +99,24 @@ struct DashboardView: View {
                         }
                         
                         VStack(spacing: 12) {
-                            
-                                EmployeeCardListView()
-                                    .onTapGesture {
-                                        viewModel.showSheet = true
-                                    }
-                            
+                            EmployeeCardListView(
+                                employees: viewModel.filteredEmployees(),
+                                onEmployeeTap: { employee in
+                                    viewModel.selectedEmployee = employee
+                                    viewModel.showSheet = true
+                                }
+                            )
+                            .sheet(isPresented: $viewModel.showSheet) {
+                                if let employee = viewModel.selectedEmployee {
+                                    BottomSheetColaboratorView(
+                                        employee: employee, showSheet: $viewModel.showSheet
+                                    )
+                                    .presentationDragIndicator(.visible)
+                                }
+                            }
+  
                         }
-                        .sheet(isPresented: $viewModel.showSheet) {
-                            BottomSheetColaboratorView(showSheet: $viewModel.showSheet)
-                                .presentationDragIndicator(.visible)
-                        }
+
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 32)
