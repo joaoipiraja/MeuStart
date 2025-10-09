@@ -8,15 +8,13 @@
 import SwiftUI
 
 struct EmployeeCardListView: View {
+    @StateObject private var viewModel = DashboardViewModel()
     var body: some View {
         VStack(spacing: 0) {
-            EmployeeCardView(name: "André de Lima Freitas", role: "Product Designer", status: .concluido)
-            Divider().padding(.leading, 30).padding(.vertical, 2)
-            EmployeeCardView(name: "Manoel Gomes Ferreira", role: "Auxiliar Administrativo", status: .atraso)
-            Divider().padding(.leading, 30)
-            EmployeeCardView(name: "Beatriz Maria Andrade", role: "Analista Financeiro", status: .atencao)
-            Divider().padding(.leading, 30)
-            EmployeeCardView(name: "Clarece de Sousa Dourado", role: "Diretora de Marketing", status: .atencao)
+            ForEach(viewModel.employees) { employee in
+                EmployeeCardView(employee: employee)
+                Divider().padding(.leading, 30)
+            }
         }
         .background(Color.white)
         .cornerRadius(12)

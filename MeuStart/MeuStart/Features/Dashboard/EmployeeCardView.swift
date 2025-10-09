@@ -8,56 +8,52 @@
 import SwiftUI
 
 struct EmployeeCardView: View {
-    enum Status {
-        case concluido, atraso, atencao
-        
-        var color: Color {
-            switch self {
-            case .concluido: return .green
-            case .atraso: return .red
-            case .atencao: return .yellow
-            }
-        }
-        
-        var text: String {
-            switch self {
-            case .concluido: return "CONCLUÍDO"
-            case .atraso: return "COM ATRASO"
-            case .atencao: return "ATENÇÃO"
-            }
+    let employee: Employee
+    
+    var color: Color {
+        switch employee.status {
+        case .completed: return .green
+        case .delayed: return .red
+        case .atention: return .yellow
         }
     }
     
-    let name: String
-    let role: String
-    let status: Status
+    var labelText: String {
+        switch employee.status {
+        case .completed: return "Concluído"
+        case .delayed: return "Atrasado"
+        case .atention: return "Atenção"
+        }
+    }
+    
+  
     
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             Circle()
-                .fill(status.color)
+                .fill(color)
                 .frame(width: 10, height: 10)
                 .padding(.top, 8)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(name)
+                Text(employee.name)
                     .fontWeight(.semibold)
                 HStack{
                     Text("CARGO:")
                         .font(.caption)
                         .fontWeight(.semibold)
-                    Text(role.uppercased())
+                    Text(employee.role.uppercased())
                         .font(.caption)
                 }
 
                 
-                Text(status.text)
+                Text(labelText)
                     .font(.caption2)
                     .fontWeight(.bold)
                     .padding(.vertical, 4)
                     .padding(.horizontal, 8)
-                    .background(status.color.opacity(0.1))
-                    .foregroundColor(status.color)
+                    .background(color.opacity(0.1))
+                    .foregroundColor(color)
                     .cornerRadius(10)
             }
             
@@ -76,5 +72,6 @@ struct EmployeeCardView: View {
 
 
 #Preview {
-    EmployeeCardView(name: "Name", role: "Product Designer", status: .atencao)
+    EmployeeCardView(employee: Employee(name: "João Vitor", role: "Product Designer", status: .atention))
 }
+
