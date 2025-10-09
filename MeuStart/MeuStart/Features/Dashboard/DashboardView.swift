@@ -92,7 +92,7 @@ struct DashboardView: View {
                             }
                         }
                         .sheet(isPresented: $showSheet) {
-                            BottomSheetColaboratorView(showSheet: $showSheet)
+                            BottomSheetColaboratorView(showSheet: $showSheet).presentationDragIndicator(.visible)
                         }
                     }
                     .padding(.horizontal)
@@ -109,7 +109,6 @@ struct DashboardView: View {
                 Label("Início", systemImage: "house.fill")
             }
             .navigationTitle("Inicio")
-            //.padding(.horizontal)
         }
     }
 
