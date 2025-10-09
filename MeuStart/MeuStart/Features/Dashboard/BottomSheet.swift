@@ -152,8 +152,7 @@ struct BottomSheet: View {
                         }
                     }
                     .scrollContentBackground(.hidden)
-                        .listRowInsets(EdgeInsets()) // remove padding interno nas linhas
-                        .padding(.top, -42)
+                    .padding(.top, -42)
                     .listStyle(.insetGrouped)
                     .navigationDestination(for: ChecklistItem.self) { item in
                         if let idx = itemsIntegration.firstIndex(where: { $0.id == item.id }) {
@@ -163,7 +162,7 @@ struct BottomSheet: View {
                         }
                     }
                     
-                }.background(Color(red: 0.95, green: 0.95, blue: 0.97))
+                }
                 .background(Color(red: 0.95, green: 0.95, blue: 0.97))
                 .toolbarBackground(Color.white, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
@@ -180,9 +179,6 @@ struct BottomSheet: View {
                         }
                     }
                 }
-                Spacer()
-            
-
         }
     }
 }
