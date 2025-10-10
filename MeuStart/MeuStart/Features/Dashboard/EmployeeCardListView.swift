@@ -8,23 +8,49 @@
 import SwiftUI
 
 struct EmployeeCardListView: View {
+    let employees: [Employee]
+    var onEmployeeTap: (Employee) -> Void
+
     var body: some View {
         VStack(spacing: 0) {
-            EmployeeCardView(name: "André de Lima Freitas", role: "Product Designer", status: .concluido)
-            Divider().padding(.leading, 30).padding(.vertical, 2)
-            EmployeeCardView(name: "Manoel Gomes Ferreira", role: "Auxiliar Administrativo", status: .atraso)
-            Divider().padding(.leading, 30)
-            EmployeeCardView(name: "Beatriz Maria Andrade", role: "Analista Financeiro", status: .atencao)
-            Divider().padding(.leading, 30)
-            EmployeeCardView(name: "Clarece de Sousa Dourado", role: "Diretora de Marketing", status: .atencao)
+            ForEach(employees) { employee in
+                EmployeeCardView(employee: employee)
+                    .onTapGesture {
+                        onEmployeeTap(employee)
+                    }
+                Divider().padding(.leading, 30)
+            }
         }
         .background(Color.white)
         .cornerRadius(12)
         .shadow(color: Color.black.opacity(0.05), radius: 0, x: 0, y: 2)
-
     }
 }
 
 #Preview {
-    EmployeeCardListView()
+    EmployeeCardListView(employees: [
+        Employee(
+            name: "João Vitor",
+            role: "Product Designer",
+            manager: "Maria Souza",
+            status: .atention,
+            startDate: "01/10/2025"
+        ),
+        Employee(
+            name: "Beatriz Andrade",
+            role: "Analista Financeiro",
+            manager: "Carlos Lima",
+            status: .completed,
+            startDate: "05/09/2025"
+        ),
+        Employee(
+            name: "Manoel Gomes",
+            role: "Auxiliar Administrativo",
+            manager: "Paula Ribeiro",
+            status: .delayed,
+            startDate: "20/09/2025"
+        )
+    ], onEmployeeTap: {_ in}
+    )
 }
+

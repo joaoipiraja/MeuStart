@@ -5,15 +5,16 @@
 //  Created by João Vitor Alves Holanda on 30/09/25.
 //
 
+
 import SwiftUI
 
+
 struct DashboardView: View {
-    @State private var showSheet = false
+    @StateObject private var viewModel = DashboardViewModel()
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
-                    
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Início")
                             .font(.largeTitle)
@@ -38,9 +39,10 @@ struct DashboardView: View {
                                 .padding(.top, 16)
                             
                             VStack {
-                                SummaryItemView(title: "COLABORADORES ATIVOS", value: "05", color: .blue)
-                                SummaryItemView(title: "CONCLUÍDOS (MÊS)", value: "04", color: .green)
-                                SummaryItemView(title: "EM ATRASO", value: "01", color: .red)
+                                SummaryItemView(title: "COLABORADORES ATIVOS", value: viewModel.employees.count, color: .blue)
+                                SummaryItemView(title: "CONCLUÍDOS (MÊS)", value: viewModel.employees.filter { $0.status == .completed }.count, color: .green)
+                                SummaryItemView(title: "EM ATRASO", value: viewModel.employees.filter { $0.status == .delayed }.count, color: .red)
+
                             }
                         }
                         .padding()
@@ -57,8 +59,14 @@ struct DashboardView: View {
                             .padding(.vertical, 10)
                         
                         HStack {
-                            Button(action: {}) {
-                                Text("Todos")
+                            Menu {
+                                ForEach(DashboardViewModel.FilterOption.allCases, id: \.self) { filter in
+                                    Button(filter.rawValue) {
+                                        viewModel.selectedFilter = filter
+                                    }
+                                }
+                            } label: {
+                                Text(viewModel.selectedFilter.rawValue)
                                     .fontWeight(.semibold)
                                     .padding(.vertical, 16)
                                     .padding(.horizontal, 20)
@@ -68,8 +76,12 @@ struct DashboardView: View {
                             }
                             
                             Menu {
-                                Button("Nome") {}
-                                Button("Status") {}
+                                ForEach(DashboardViewModel.SortOption.allCases, id: \.self) { sort in
+                                    Button(sort.rawValue) {
+                                        viewModel.selectedSort = sort
+                                        viewModel.sortEmployees()
+                                    }
+                                }
                             } label: {
                                 HStack {
                                     Text("Ordenar por").foregroundColor(.black)
@@ -87,35 +99,40 @@ struct DashboardView: View {
                         }
                         
                         VStack(spacing: 12) {
-                            EmployeeCardListView().onTapGesture {
-                                showSheet = true
+                            EmployeeCardListView(
+                                employees: viewModel.filteredEmployees(),
+                                onEmployeeTap: { employee in
+                                    viewModel.selectedEmployee = employee
+                                    viewModel.showSheet = true
+                                }
+                            )
+                            .sheet(isPresented: $viewModel.showSheet) {
+                                if let employee = viewModel.selectedEmployee {
+                                    BottomSheetColaboratorView(
+                                        employee: employee, showSheet: $viewModel.showSheet
+                                    )
+                                    .presentationDragIndicator(.visible)
+                                }
                             }
+  
                         }
-                        .sheet(isPresented: $showSheet) {
-                            BottomSheetColaboratorView(showSheet: $showSheet)
-                        }
+
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 32)
-                   
                 }
                 .background(Color(UIColor.systemGray6))
             }
             .background(Color.white)
             .navigationBarHidden(true)
-            }
-            .navigationViewStyle(StackNavigationViewStyle())
-            .tabItem {
-                Label("Início", systemImage: "house.fill")
-            }
-            .navigationTitle("Inicio")
-            //.padding(.horizontal)
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .tabItem {
+            Label("Início", systemImage: "house.fill")
         }
     }
-
-
+}
 
 #Preview {
     DashboardView()
 }
-

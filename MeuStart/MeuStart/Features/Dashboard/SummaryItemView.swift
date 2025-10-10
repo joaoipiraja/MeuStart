@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SummaryItemView: View {
     let title: String
-    let value: String
+    let value: Int
     let color: Color
     
     var body: some View {
@@ -19,7 +19,7 @@ struct SummaryItemView: View {
                 .foregroundColor(color)
                 .multilineTextAlignment(.center)
             Spacer()
-            Text(value)
+            Text("\(value)")
                 .font(.headline)
                 .foregroundColor(color)
                 .frame(width: 40, height: 29)
@@ -34,5 +34,5 @@ struct SummaryItemView: View {
 }
 
 #Preview {
-    SummaryItemView(title: "oi", value: "oi", color: .blue)
+    SummaryItemView(title: "oi", value: 1, color: .blue)
 }
