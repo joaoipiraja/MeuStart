@@ -223,10 +223,17 @@ import SwiftUI
 //  Created by João Vitor Alves Holanda on 09/10/25.
 //
 
+//
+//  BottomSheetColaboratorView.swift
+//  MeuStart
+//
+//  Created by João Vitor Alves Holanda on 17/10/25.
+//
+
 import SwiftUI
 
 struct BottomSheetColaboratorView: View {
-    let employee: Employee
+    let user: User
     @Binding var showSheet: Bool
 
     // MARK: - Checklist fake data
@@ -276,7 +283,7 @@ struct BottomSheetColaboratorView: View {
 
     // MARK: - Computed props
     var statusColor: Color {
-        switch employee.status {
+        switch user.status {
         case .completed: return .green
         case .delayed: return .red
         case .atention: return .yellow
@@ -284,7 +291,7 @@ struct BottomSheetColaboratorView: View {
     }
 
     var statusLabel: String {
-        switch employee.status {
+        switch user.status {
         case .completed: return "Concluído"
         case .delayed: return "Atrasado"
         case .atention: return "Atenção"
@@ -296,7 +303,7 @@ struct BottomSheetColaboratorView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     // 🔹 Cabeçalho isolado em Subview
-                    EmployeeHeaderView(employee: employee, statusLabel: statusLabel, statusColor: statusColor)
+                    UserHeaderView(user: user, statusLabel: statusLabel, statusColor: statusColor)
 
                     // 🔹 Checklists
                     ChecklistSectionView(title: "Checklist de Onboarding", items: $itemsOnboard)
@@ -319,15 +326,15 @@ struct BottomSheetColaboratorView: View {
     }
 }
 
-// MARK: - Subview: Cabeçalho do Colaborador
-private struct EmployeeHeaderView: View {
-    let employee: Employee
+// MARK: - Subview: Cabeçalho do Usuário
+private struct UserHeaderView: View {
+    let user: User
     let statusLabel: String
     let statusColor: Color
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(employee.name)
+            Text(user.name)
                 .font(.title3)
                 .fontWeight(.semibold)
                 .padding(.top, 20)
@@ -343,9 +350,9 @@ private struct EmployeeHeaderView: View {
                 .cornerRadius(10)
 
             Group {
-                InfoRow(title: "CARGO:", value: employee.role)
-                InfoRow(title: "GESTOR:", value: employee.manager ?? "")
-                InfoRow(title: "DATA DE INÍCIO:", value: employee.formattedStartDate)
+                InfoRow(title: "CARGO:", value: user.role)
+                InfoRow(title: "GESTOR:", value: user.manager ?? "")
+                InfoRow(title: "DATA DE INÍCIO:", value: user.formattedStartDate)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -412,13 +419,16 @@ private struct ChecklistSectionView: View {
 // MARK: - Preview
 #Preview {
     @Previewable @State var showSheet2 = true
-    let employeeEx = Employee(
+    let userEx = User(
         name: "João Vitor",
+        email: "joao@teste.com",
+        password: "123",
         role: "Product Designer",
+        isAdmin: false,
         manager: "Maria Souza",
         status: .completed,
         startDate: .now
     )
-    BottomSheetColaboratorView(employee: employeeEx, showSheet: $showSheet2)
-}
 
+    BottomSheetColaboratorView(user: userEx, showSheet: $showSheet2)
+}

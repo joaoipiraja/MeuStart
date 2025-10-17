@@ -142,29 +142,42 @@
 //#Preview {
 //    DashboardView()
 //}
-
+//
+//  DashboardView.swift
+//  MeuStart
+//
+//  Created by João Vitor Alves Holanda on 09/10/25.
+//
+//
+//  DashboardView.swift
+//  MeuStart
+//
+//  Created by João Vitor Alves Holanda on 09/10/25.
+//
 
 import SwiftUI
 import SwiftData
 
 struct DashboardView: View {
-    @ObservedObject var vm: LoginViewModel   // 👈 ViewModel do login
-    @ObservedObject var employeeVM: EmployeeViewModel
+    @ObservedObject var vm: LoginViewModel
+    @ObservedObject var userVM: UserViewModel
     @StateObject private var viewModel: DashboardViewModel
 
-    init(employeeVM: EmployeeViewModel, vm: LoginViewModel) {
-        self._employeeVM = ObservedObject(initialValue: employeeVM)
-        self._viewModel = StateObject(wrappedValue: DashboardViewModel(employeeVM: employeeVM))
+    @State private var showingUserManager = false
+    @State private var showingTaskManager = false
+
+    init(userVM: UserViewModel, vm: LoginViewModel) {
+        self._userVM = ObservedObject(initialValue: userVM)
+        self._viewModel = StateObject(wrappedValue: DashboardViewModel(userVM: userVM))
         self._vm = ObservedObject(initialValue: vm)
     }
 
-    @State var showingUserManager = false
-    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
-                    // Cabeçalho
+
+                    // 🔹 Cabeçalho
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Início")
                             .font(.largeTitle)
@@ -176,7 +189,7 @@ struct DashboardView: View {
                     .frame(maxWidth: .infinity)
                     .background(Color(red: 252/255, green: 252/255, blue: 253/255))
 
-                    // Seção de resumo
+                    // 🔹 Seção de resumo
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Acompanhamento de Onboarding")
                             .font(.title2)
@@ -185,18 +198,31 @@ struct DashboardView: View {
                             .padding(.vertical, 20)
 
                         VStack {
-                            SummaryItemView(title: "COLABORADORES ATIVOS", value: viewModel.activeCount, color: .blue)
-                            SummaryItemView(title: "CONCLUÍDOS (MÊS)", value: viewModel.completedCount, color: .green)
-                            SummaryItemView(title: "EM ATRASO", value: viewModel.delayedCount, color: .red)
+                            SummaryItemView(
+                                title: "COLABORADORES ATIVOS",
+                                value: viewModel.atentionCount,
+                                color: .blue
+                            )
+                            SummaryItemView(
+                                title: "CONCLUÍDOS (MÊS)",
+                                value: viewModel.completedCount,
+                                color: .green
+                            )
+                            SummaryItemView(
+                                title: "EM ATRASO",
+                                value: viewModel.delayedCount,
+                                color: .red
+                            )
                         }
                         .padding()
                         .background(Color.white)
                         .cornerRadius(12)
                         .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
                         .padding(.horizontal)
+                        .padding(.bottom, 15)
                     }
 
-                    // Lista
+                    // 🔹 Lista de usuários (colaboradores)
                     VStack(alignment: .leading, spacing: 11) {
                         Text("Lista de Colaboradores")
                             .font(.title2)
@@ -245,18 +271,21 @@ struct DashboardView: View {
                             }
                         }
 
-                        // Cards
-                        EmployeeCardListView(
-                            employees: viewModel.filteredList,
-                            onEmployeeTap: { employee in
-                                viewModel.selectedEmployee = employee
+                        // Cartões de usuários
+                        UserCardListView(
+                            users: viewModel.filteredList,
+                            onUserTap: { user in
+                                viewModel.selectedUser = user
                                 viewModel.showSheet = true
                             }
                         )
                         .sheet(isPresented: $viewModel.showSheet) {
-                            if let employee = viewModel.selectedEmployee {
-                                BottomSheetColaboratorView(employee: employee, showSheet: $viewModel.showSheet)
-                                    .presentationDragIndicator(.visible)
+                            if let user = viewModel.selectedUser {
+                                BottomSheetColaboratorView(
+                                    user: user,
+                                    showSheet: $viewModel.showSheet
+                                )
+                                .presentationDragIndicator(.visible)
                             }
                         }
                     }
@@ -265,18 +294,11 @@ struct DashboardView: View {
                 }
                 .background(Color(UIColor.systemGray6))
             }
+
+            // 🔹 Toolbars
             .navigationBarHidden(false)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingUserManager = true
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(.green)
-                            .font(.title2)
-                    }
-                }
-
+                // Botão de logout (esquerda)
                 ToolbarItem(placement: .topBarLeading) {
                     Button(role: .destructive) {
                         vm.logout()
@@ -284,12 +306,40 @@ struct DashboardView: View {
                         Label("Sair", systemImage: "rectangle.portrait.and.arrow.right")
                     }
                 }
+
+                // Botões do admin (direita)
+                ToolbarItem(placement: .topBarTrailing) {
+                    if vm.loggedUser?.isAdmin == true {
+                        HStack(spacing: 14) {
+                            // 🔵 Gerenciar tarefas
+                            Button {
+                                showingTaskManager = true
+                            } label: {
+                                Image(systemName: "list.bullet.rectangle.portrait")
+                                    .foregroundColor(.blue)
+                                    .font(.title2)
+                            }
+
+                            // 🟢 Gerenciar usuários
+                            Button {
+                                showingUserManager = true
+                            } label: {
+                                Image(systemName: "plus.circle.fill")
+                                    .foregroundColor(.green)
+                                    .font(.title2)
+                            }
+                        }
+                    }
+                }
             }
+
+            // Sheets
             .sheet(isPresented: $showingUserManager) {
                 UserManagerView()
             }
-
-
+            .sheet(isPresented: $showingTaskManager) {
+                TaskManagerView()
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
@@ -297,8 +347,8 @@ struct DashboardView: View {
 
 #Preview {
     DashboardView(
-        employeeVM: EmployeeViewModel(
-            context: .init(try! ModelContainer(for: Employee.self))
+        userVM: UserViewModel(
+            context: .init(try! ModelContainer(for: User.self))
         ),
         vm: LoginViewModel()
     )

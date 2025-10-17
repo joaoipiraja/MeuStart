@@ -4,14 +4,20 @@
 //
 //  Created by João Vitor Alves Holanda on 03/10/25.
 //
+//
+//  UserCardView.swift
+//  MeuStart
+//
+//  Created by João Vitor Alves Holanda on 17/10/25.
+//
 
 import SwiftUI
 
-struct EmployeeCardView: View {
-    let employee: Employee
+struct UserCardView: View {
+    let user: User
     
     var color: Color {
-        switch employee.status {
+        switch user.status {
         case .completed: return .green
         case .delayed: return .red
         case .atention: return .yellow
@@ -19,14 +25,12 @@ struct EmployeeCardView: View {
     }
     
     var labelText: String {
-        switch employee.status {
+        switch user.status {
         case .completed: return "Concluído"
         case .delayed: return "Atrasado"
         case .atention: return "Atenção"
         }
     }
-    
-  
     
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -36,16 +40,15 @@ struct EmployeeCardView: View {
                 .padding(.top, 8)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(employee.name)
+                Text(user.name)
                     .fontWeight(.semibold)
-                HStack{
+                HStack {
                     Text("CARGO:")
                         .font(.caption)
                         .fontWeight(.semibold)
-                    Text(employee.role.uppercased())
+                    Text(user.role.uppercased())
                         .font(.caption)
                 }
-
                 
                 Text(labelText)
                     .font(.caption2)
@@ -71,8 +74,17 @@ struct EmployeeCardView: View {
     }
 }
 
-
 #Preview {
-    EmployeeCardView(employee: Employee(name: "João Vitor", role: "Product Designer", manager:"", status: .atention, startDate: .now))
+    UserCardView(
+        user: User(
+            name: "João Vitor",
+            email: "joao@teste.com",
+            password: "123",
+            role: "Product Designer",
+            isAdmin: false,
+            manager: "Maria Souza",
+            status: .atention,
+            startDate: .now
+        )
+    )
 }
-

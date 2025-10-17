@@ -4,19 +4,25 @@
 //
 //  Created by João Vitor Alves Holanda on 06/10/25.
 //
+//
+//  UserCardListView.swift
+//  MeuStart
+//
+//  Created by João Vitor Alves Holanda on 17/10/25.
+//
 
 import SwiftUI
 
-struct EmployeeCardListView: View {
-    let employees: [Employee]
-    var onEmployeeTap: (Employee) -> Void
+struct UserCardListView: View {
+    let users: [User]
+    var onUserTap: (User) -> Void
 
     var body: some View {
         VStack(spacing: 0) {
-            ForEach(employees) { employee in
-                EmployeeCardView(employee: employee)
+            ForEach(users) { user in
+                UserCardView(user: user)
                     .onTapGesture {
-                        onEmployeeTap(employee)
+                        onUserTap(user)
                     }
                 Divider().padding(.leading, 30)
             }
@@ -28,29 +34,39 @@ struct EmployeeCardListView: View {
 }
 
 #Preview {
-    EmployeeCardListView(employees: [
-        Employee(
-            name: "João Vitor",
-            role: "Product Designer",
-            manager: "Maria Souza",
-            status: .atention,
-            startDate: .now
-        ),
-        Employee(
-            name: "Beatriz Andrade",
-            role: "Analista Financeiro",
-            manager: "Carlos Lima",
-            status: .completed,
-            startDate: .now
-        ),
-        Employee(
-            name: "Manoel Gomes",
-            role: "Auxiliar Administrativo",
-            manager: "Paula Ribeiro",
-            status: .delayed,
-            startDate: .now
-        )
-    ], onEmployeeTap: {_ in}
+    UserCardListView(
+        users: [
+            User(
+                name: "João Vitor",
+                email: "joao@teste.com",
+                password: "123",
+                role: "Product Designer",
+                isAdmin: false,
+                manager: "Maria Souza",
+                status: .atention,
+                startDate: .now
+            ),
+            User(
+                name: "Beatriz Andrade",
+                email: "bia@teste.com",
+                password: "123",
+                role: "Analista Financeiro",
+                isAdmin: false,
+                manager: "Carlos Lima",
+                status: .completed,
+                startDate: .now
+            ),
+            User(
+                name: "Manoel Gomes",
+                email: "manoel@teste.com",
+                password: "123",
+                role: "Auxiliar Administrativo",
+                isAdmin: false,
+                manager: "Paula Ribeiro",
+                status: .delayed,
+                startDate: .now
+            )
+        ],
+        onUserTap: { _ in }
     )
 }
-

@@ -4,6 +4,12 @@
 //
 //  Created by João Victor Ipirajá de Alencar on 29/09/25.
 //
+//
+//  LoginView.swift
+//  MeuStart
+//
+//  Created by João Vitor Alves Holanda on 29/09/25.
+//
 
 import SwiftUI
 import SwiftData
@@ -19,8 +25,7 @@ struct LoginView: View {
         NavigationStack {
             if let user = vm.loggedUser {
                 if user.isAdmin {
-                    DashboardView(employeeVM: EmployeeViewModel(context: context), vm: vm)
-
+                    DashboardView(userVM: UserViewModel(context: context), vm: vm)
                 } else {
                     MeusChecklistsView(vm: vm)
                 }
@@ -121,5 +126,5 @@ struct LoginView: View {
 
 #Preview {
     LoginView()
-        .modelContainer(for: [User.self, Employee.self])
+        .modelContainer(for: [User.self])
 }

@@ -71,28 +71,29 @@
 //
 //  Created by João Vitor Alves Holanda on 03/10/25.
 //
+
 import SwiftUI
 import SwiftData
 
 @MainActor
 final class DashboardViewModel: ObservableObject {
     @Published var showSheet = false
-    @Published var selectedEmployee: Employee?
+    @Published var selectedUser: User?
     @Published var selectedFilter: FilterOption = .all
     @Published var selectedSort: SortOption = .name
-    @Published private(set) var filteredList: [Employee] = []
+    @Published private(set) var filteredList: [User] = []
 
-    private let employeeVM: EmployeeViewModel
+    private let userVM: UserViewModel
 
-    init(employeeVM: EmployeeViewModel) {
-        self.employeeVM = employeeVM
+    init(userVM: UserViewModel) {
+        self.userVM = userVM
         applyFilters()
     }
 
     // MARK: - Filtro e Ordenação
     enum FilterOption: String, CaseIterable {
         case all = "Todos"
-        case active = "Ativos"
+        case atention = "Atenção"
         case delayed = "Em Atraso"
         case completed = "Concluídos"
     }
@@ -102,31 +103,37 @@ final class DashboardViewModel: ObservableObject {
         case status = "Status"
     }
 
+    // MARK: - Atualizar lista
     func refresh() {
-        employeeVM.fetchEmployees()
+        userVM.fetchUsers()
         applyFilters()
     }
 
     func applyFilters() {
-        var list = employeeVM.employees
+        var list = userVM.users
 
         switch selectedFilter {
         case .all: break
-        case .active: list = list.filter { $0.statusRawValue == 0 }
-        case .delayed: list = list.filter { $0.statusRawValue == 1 }
-        case .completed: list = list.filter { $0.statusRawValue == 2 }
+        case .atention:
+            list = list.filter { $0.status == .atention }
+        case .delayed:
+            list = list.filter { $0.status == .delayed }
+        case .completed:
+            list = list.filter { $0.status == .completed }
         }
 
         switch selectedSort {
-        case .name: list.sort { $0.name.localizedCompare($1.name) == .orderedAscending }
-        case .status: list.sort { $0.statusRawValue < $1.statusRawValue }
+        case .name:
+            list.sort { $0.name.localizedCompare($1.name) == .orderedAscending }
+        case .status:
+            list.sort { $0.statusRawValue < $1.statusRawValue }
         }
 
         filteredList = list
     }
 
     // MARK: - Contadores
-    var activeCount: Int { employeeVM.employees.filter { $0.statusRawValue == 0 }.count }
-    var delayedCount: Int { employeeVM.employees.filter { $0.statusRawValue == 1 }.count }
-    var completedCount: Int { employeeVM.employees.filter { $0.statusRawValue == 2 }.count }
+    var atentionCount: Int { userVM.users.filter { $0.status == .atention }.count }
+    var delayedCount: Int { userVM.users.filter { $0.status == .delayed }.count }
+    var completedCount: Int { userVM.users.filter { $0.status == .completed }.count }
 }

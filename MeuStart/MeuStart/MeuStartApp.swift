@@ -31,9 +31,9 @@ struct MeuStartApp: App {
             ContentViewWrapper()
         }
         .modelContainer(for: [
-            Employee.self,
             User.self,
-            TaskItem.self
+            TaskItem.self,
+            TaskTemplate.self 
         ])
     }
 }
@@ -55,7 +55,7 @@ struct ContentViewWrapper: View {
                 // Admin
                 let admin = User(
                     name: "Admin",
-                    email: "admin@teste.com",
+                    email: "a@a.com",
                     password: "123",
                     role: "Administrador",
                     isAdmin: true
@@ -64,7 +64,7 @@ struct ContentViewWrapper: View {
                 // Usuário comum
                 let colaborador = User(
                     name: "João Colaborador",
-                    email: "colab@teste.com",
+                    email: "b@b.com",
                     password: "123",
                     role: "Colaborador",
                     isAdmin: false

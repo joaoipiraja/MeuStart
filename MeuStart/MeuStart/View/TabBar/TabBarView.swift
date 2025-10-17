@@ -48,10 +48,10 @@ struct TabBarView: View {
     @ObservedObject var vm: LoginViewModel   // 👈 adiciona o ViewModel
 
     var body: some View {
-        let employeeVM = EmployeeViewModel(context: context)
+        let employeeVM = UserViewModel(context: context)
 
         TabView {
-            DashboardView(employeeVM: employeeVM, vm: vm)
+            DashboardView(userVM: employeeVM, vm: vm)
                 .tabItem {
                     Label("Início", systemImage: "house.fill")
                 }
