@@ -1,15 +1,15 @@
 //
-//  Checklist.swift
+//  MeusChecklistsView 2.swift
 //  MeuStart
 //
-//  Created by João Victor Ipirajá de Alencar on 30/09/25.
+//  Created by João Vitor Alves Holanda on 16/10/25.
 //
 
 
 import SwiftUI
 
-// MARK: - Views
 struct MeusChecklistsView: View {
+    @ObservedObject var vm: LoginViewModel   // 👈 ViewModel do login
     @State private var checklists: [Checklist] = [
         .init(titulo: "Onboarding - Primeiros Passos", tarefasConcluidas: 2, totalTarefas: 5),
         .init(titulo: "Treinamento de Integração", tarefasConcluidas: 4, totalTarefas: 5)
@@ -28,7 +28,7 @@ struct MeusChecklistsView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Início")
                                     .font(.largeTitle).bold()
-                                Text("Olá, João!")
+                                Text("Olá, Colaborador!")
                                     .font(.title3).bold()
                                     .foregroundStyle(.primary)
                             }
@@ -42,7 +42,6 @@ struct MeusChecklistsView: View {
                             VStack(spacing: 14) {
                                 ForEach(checklists) { item in
                                     ChecklistCard(checklist: item) {
-                                        // ação do botão "Abrir checklist"
                                         print("Abrir \(item.titulo)")
                                     }
                                 }
@@ -53,9 +52,15 @@ struct MeusChecklistsView: View {
                         .padding(.bottom, 24)
                     }
                 }
-                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("Início")
                 .toolbar {
-                    ToolbarItem(placement: .principal) { EmptyView() } // remove título do NavBar
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(role: .destructive) {
+                            vm.logout()
+                        } label: {
+                            Label("Sair", systemImage: "rectangle.portrait.and.arrow.right")
+                        }
+                    }
                 }
             }
             .tabItem {
@@ -77,13 +82,10 @@ struct MeusChecklistsView: View {
                     Text("Configurações")
                 }
         }
-        // Mantém uma cor visível para os ícones
         .tint(.green)
     }
 }
 
-
-// MARK: - Preview
 #Preview {
-    MeusChecklistsView()
+    MeusChecklistsView(vm: LoginViewModel())
 }

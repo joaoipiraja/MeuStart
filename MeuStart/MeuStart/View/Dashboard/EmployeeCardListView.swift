@@ -34,21 +34,21 @@ struct EmployeeCardListView: View {
             role: "Product Designer",
             manager: "Maria Souza",
             status: .atention,
-            startDate: "01/10/2025"
+            startDate: .now
         ),
         Employee(
             name: "Beatriz Andrade",
             role: "Analista Financeiro",
             manager: "Carlos Lima",
             status: .completed,
-            startDate: "05/09/2025"
+            startDate: .now
         ),
         Employee(
             name: "Manoel Gomes",
             role: "Auxiliar Administrativo",
             manager: "Paula Ribeiro",
             status: .delayed,
-            startDate: "20/09/2025"
+            startDate: .now
         )
     ], onEmployeeTap: {_ in}
     )

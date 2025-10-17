@@ -73,6 +73,6 @@ struct EmployeeCardView: View {
 
 
 #Preview {
-    EmployeeCardView(employee: Employee(name: "João Vitor", role: "Product Designer", manager:"", status: .atention, startDate: ""))
+    EmployeeCardView(employee: Employee(name: "João Vitor", role: "Product Designer", manager:"", status: .atention, startDate: .now))
 }
 
